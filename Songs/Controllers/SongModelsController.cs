@@ -27,7 +27,7 @@ namespace Songs.Controllers
         {
           if (_context.Songs == null)
           {
-              return NotFound();
+              return NotFound("Inga låtar kunde hittas");
           }
             return await _context.Songs.ToListAsync();
         }
@@ -44,7 +44,7 @@ namespace Songs.Controllers
 
             if (songModel == null)
             {
-                return NotFound();
+                return NotFound("Låten kunde inte hittas");
             }
 
             return songModel;
@@ -70,7 +70,7 @@ namespace Songs.Controllers
             {
                 if (!SongModelExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Låten kunde inte hittas");
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace Songs.Controllers
             var songModel = await _context.Songs.FindAsync(id);
             if (songModel == null)
             {
-                return NotFound();
+                return NotFound("Låten kunde inte hittas");
             }
 
             _context.Songs.Remove(songModel);
