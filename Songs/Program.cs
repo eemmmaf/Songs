@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using Songs.Data;
+
 namespace Songs
 {
     public class Program
@@ -12,6 +15,11 @@ namespace Songs
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //Använder MySql och använder anslutningssträngen "MySqlSongString"
+            builder.Services.AddDbContext<SongContext>(options =>
+            options.UseMySql(builder.Configuration.GetConnectionString("MySqlSongString"), new MySqlServerVersion(new Version())));
+
 
             var app = builder.Build();
 
