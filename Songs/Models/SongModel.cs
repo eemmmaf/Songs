@@ -2,7 +2,7 @@
 
 namespace Songs.Models
 {
-    public class SongModel
+    public class Song
     {
         public int Id { get; set; } //PK
 
@@ -15,8 +15,22 @@ namespace Songs.Models
         [Required]
         public int Length { get; set; }
 
+        //Foreign key
         [Required]
-        public string Category { get; set; }
-
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
     }
+
+    //Klass för kategorier
+    public class Category
+    {
+        //PK
+        public int CategoryId { get; set; }
+
+        [Required]
+        public string? CategoryName { get; set; }
+
+        public List<Song>? Song { get; set; }
+
+        }
 }

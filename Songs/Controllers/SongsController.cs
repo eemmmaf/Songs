@@ -12,55 +12,55 @@ namespace Songs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SongModelsController : ControllerBase
+    public class SongsController : ControllerBase
     {
         private readonly SongContext _context;
 
-        public SongModelsController(SongContext context)
+        public SongsController(SongContext context)
         {
             _context = context;
         }
 
-        // GET: api/SongModels
+        // GET: api/Songs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SongModel>>> GetSongs()
-        {
-          if (_context.Songs == null)
-          {
-              return NotFound("Inga låtar kunde hittas");
-          }
-            return await _context.Songs.ToListAsync();
-        }
-
-        // GET: api/SongModels/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<SongModel>> GetSongModel(int id)
+        public async Task<ActionResult<IEnumerable<Song>>> GetSongs()
         {
           if (_context.Songs == null)
           {
               return NotFound();
           }
-            var songModel = await _context.Songs.FindAsync(id);
-
-            if (songModel == null)
-            {
-                return NotFound("Låten kunde inte hittas");
-            }
-
-            return songModel;
+            return await _context.Songs.ToListAsync();
         }
 
-        // PUT: api/SongModels/5
+        // GET: api/Songs/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Song>> GetSong(int id)
+        {
+          if (_context.Songs == null)
+          {
+              return NotFound();
+          }
+            var song = await _context.Songs.FindAsync(id);
+
+            if (song == null)
+            {
+                return NotFound();
+            }
+
+            return song;
+        }
+
+        // PUT: api/Songs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSongModel(int id, SongModel songModel)
+        public async Task<IActionResult> PutSong(int id, Song song)
         {
-            if (id != songModel.Id)
+            if (id != song.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(songModel).State = EntityState.Modified;
+            _context.Entry(song).State = EntityState.Modified;
 
             try
             {
@@ -68,9 +68,9 @@ namespace Songs.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SongModelExists(id))
+                if (!SongExists(id))
                 {
-                    return NotFound("Låten kunde inte hittas");
+                    return NotFound();
                 }
                 else
                 {
@@ -81,42 +81,42 @@ namespace Songs.Controllers
             return NoContent();
         }
 
-        // POST: api/SongModels
+        // POST: api/Songs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SongModel>> PostSongModel(SongModel songModel)
+        public async Task<ActionResult<Song>> PostSong(Song song)
         {
           if (_context.Songs == null)
           {
               return Problem("Entity set 'SongContext.Songs'  is null.");
           }
-            _context.Songs.Add(songModel);
+            _context.Songs.Add(song);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSongModel", new { id = songModel.Id }, songModel);
+            return CreatedAtAction("GetSong", new { id = song.Id }, song);
         }
 
-        // DELETE: api/SongModels/5
+        // DELETE: api/Songs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSongModel(int id)
+        public async Task<IActionResult> DeleteSong(int id)
         {
             if (_context.Songs == null)
             {
                 return NotFound();
             }
-            var songModel = await _context.Songs.FindAsync(id);
-            if (songModel == null)
+            var song = await _context.Songs.FindAsync(id);
+            if (song == null)
             {
-                return NotFound("Låten kunde inte hittas");
+                return NotFound();
             }
 
-            _context.Songs.Remove(songModel);
+            _context.Songs.Remove(song);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SongModelExists(int id)
+        private bool SongExists(int id)
         {
             return (_context.Songs?.Any(e => e.Id == id)).GetValueOrDefault();
         }

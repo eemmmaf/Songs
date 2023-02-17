@@ -7,6 +7,8 @@
         public SongContext(DbContextOptions<SongContext> options) : base(options) { }   
         
         //Använder modellen SongModel och döper tabellen till Songs
-        public DbSet<SongModel> Songs { get; set; }
+        public DbSet<Song> Songs { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
     }
 }
