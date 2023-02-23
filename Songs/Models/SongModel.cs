@@ -5,6 +5,7 @@ namespace Songs.Models
 {
     public class Song
     {
+        [Required]
         public int Id { get; set; } //PK
 
         [Required]
