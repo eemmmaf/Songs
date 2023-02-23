@@ -25,27 +25,30 @@ namespace Songs.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Song>>> GetSongs()
         {
-          if (_context.Songs == null)
-          {
-              return NotFound();
-          }
+            if (_context.Songs == null)
+            {
+                return NotFound();
+            }
+
             return await _context.Songs.ToListAsync();
+
         }
 
         // GET: api/Songs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Song>> GetSong(int id)
         {
-          if (_context.Songs == null)
-          {
-              return NotFound();
-          }
+            if (_context.Songs == null)
+            {
+                return NotFound();
+            }
             var song = await _context.Songs.FindAsync(id);
 
             if (song == null)
             {
                 return NotFound();
             }
+
 
             return song;
         }
@@ -86,10 +89,10 @@ namespace Songs.Controllers
         [HttpPost]
         public async Task<ActionResult<Song>> PostSong(Song song)
         {
-          if (_context.Songs == null)
-          {
-              return Problem("Entity set 'SongContext.Songs'  is null.");
-          }
+            if (_context.Songs == null)
+            {
+                return Problem("Entity set 'SongContext.Songs'  is null.");
+            }
             _context.Songs.Add(song);
             await _context.SaveChangesAsync();
 

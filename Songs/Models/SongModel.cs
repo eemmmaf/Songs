@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Songs.Models
 {
@@ -15,6 +16,8 @@ namespace Songs.Models
         [Required]
         public int Length { get; set; }
 
+
+
         //Foreign key
         [Required]
         public int CategoryId { get; set; }
@@ -30,7 +33,9 @@ namespace Songs.Models
         [Required]
         public string? CategoryName { get; set; }
 
-        public List<Song>? Song { get; set; }
+
+        // Navigerings som refererar till Songs
+        public List<Song>? Songs { get; set; }
 
         }
 }
