@@ -10,8 +10,8 @@ using Songs.Data;
 namespace Songs.Migrations
 {
     [DbContext(typeof(SongContext))]
-    [Migration("20230217084504_AddCategories")]
-    partial class AddCategories
+    [Migration("20230223094022_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,7 +66,7 @@ namespace Songs.Migrations
             modelBuilder.Entity("Songs.Models.Song", b =>
                 {
                     b.HasOne("Songs.Models.Category", "Category")
-                        .WithMany("Song")
+                        .WithMany("Songs")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -76,7 +76,7 @@ namespace Songs.Migrations
 
             modelBuilder.Entity("Songs.Models.Category", b =>
                 {
-                    b.Navigation("Song");
+                    b.Navigation("Songs");
                 });
 #pragma warning restore 612, 618
         }

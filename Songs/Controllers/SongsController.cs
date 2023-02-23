@@ -30,7 +30,8 @@ namespace Songs.Controllers
                 return NotFound();
             }
 
-            return await _context.Songs.ToListAsync();
+            //Hämtar alla och inkluderar kategori
+            return await _context.Songs.Include(e => e.Category).ToListAsync();
 
         }
 
@@ -42,11 +43,17 @@ namespace Songs.Controllers
             {
                 return NotFound();
             }
-            var song = await _context.Songs.FindAsync(id);
+
+            //Inkluderar kategori och id
+            var song = await _context.Songs
+           .Include(s => s.Category)
+           .AsNoTracking()
+           .FirstOrDefaultAsync(m => m.Id == id);
 
             if (song == null)
             {
-                return NotFound();
+                //Skriver ut felmeddelande om låten inte hittas
+                return NotFound("Låten kunde inte hittas");
             }
 
 
@@ -67,6 +74,16 @@ namespace Songs.Controllers
 
             try
             {
+
+                //Hämtar kategori-id
+                var category = await _context.Categories.FindAsync(song.CategoryId);
+
+                //Om kategorin inte finns returneras felmeddelande
+                if (category == null)
+                {
+                    return BadRequest("Kategorin som har uppgetts finns inte");
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -89,14 +106,23 @@ namespace Songs.Controllers
         [HttpPost]
         public async Task<ActionResult<Song>> PostSong(Song song)
         {
-            if (_context.Songs == null)
+            //Hämtar kategori-id
+            var category = await _context.Categories.FindAsync(song.CategoryId);
+
+            //Om kategorin inte finns returneras felmeddelande
+            if (category == null)
             {
-                return Problem("Entity set 'SongContext.Songs'  is null.");
+                return BadRequest("Kategorin som har uppgetts finns inte");
             }
+
+            song.Category = category;
+
+            //Sparar låten
             _context.Songs.Add(song);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSong", new { id = song.Id }, song);
+            //Returnerar det som skapats
+            return CreatedAtAction(nameof(GetSong), new { id = song.Id }, song);
         }
 
         // DELETE: api/Songs/5

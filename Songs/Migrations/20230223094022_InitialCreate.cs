@@ -15,6 +15,21 @@ namespace Songs.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CategoryName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Songs",
                 columns: table => new
                 {
@@ -25,14 +40,24 @@ namespace Songs.Migrations
                     Title = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Length = table.Column<int>(type: "int", nullable: false),
-                    Category = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Songs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Songs_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Songs_CategoryId",
+                table: "Songs",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
@@ -40,6 +65,9 @@ namespace Songs.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Songs");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

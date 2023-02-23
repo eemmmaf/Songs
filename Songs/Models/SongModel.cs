@@ -20,7 +20,9 @@ namespace Songs.Models
 
         //Foreign key
         [Required]
+        //Foreign key property
         public int CategoryId { get; set; }
+        //Navigation property
         public Category? Category { get; set; }
     }
 
@@ -34,8 +36,9 @@ namespace Songs.Models
         public string? CategoryName { get; set; }
 
 
-        // Navigerings som refererar till Songs
-        public List<Song>? Songs { get; set; }
+        /* Navigerings som refererar till Songs
+         * Tagit bort navigeringen pga det skapade nån sorts cykel som loopade oändligt
+        public List<Song>? Songs { get; set; } */
 
         }
 }
